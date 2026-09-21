@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { HeaderBar } from "@/components/layout/HeaderBar";
 import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -17,8 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-h-screen font-sans">
-        <Providers>{children}</Providers>
+      <body className="min-h-screen bg-background font-sans text-text-primary">
+        <Providers>
+          <HeaderBar />
+          {children}
+        </Providers>
       </body>
     </html>
   );
