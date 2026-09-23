@@ -126,3 +126,28 @@ CREATE TABLE vouchers (
   valid_until DATE,
   is_active BOOLEAN NOT NULL DEFAULT true
 );
+
+-- Tracks which captain/user registered a team for a tournament. Not in the brief's
+-- minimum schema list, but required to make "Register Full Team" a real, idempotent
+-- action instead of an unguarded counter increment.
+CREATE TABLE tournament_registrations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  tournament_id UUID NOT NULL REFERENCES tournaments (id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  team_name VARCHAR(120) NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (tournament_id, user_id)
+);
+CREATE INDEX idx_tournament_reg_tournament ON tournament_registrations (tournament_id);
+
+-- Tracks a player's "Request to Join" against a squad. Auto-accepted for the demo
+-- (fills a slot immediately) so the end-to-end flow is real rather than a toast-only stub.
+CREATE TABLE squad_join_requests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  squad_id UUID NOT NULL REFERENCES squad_requests (id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+  status VARCHAR(20) NOT NULL DEFAULT 'accepted',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (squad_id, user_id)
+);
+CREATE INDEX idx_squad_join_squad ON squad_join_requests (squad_id);
