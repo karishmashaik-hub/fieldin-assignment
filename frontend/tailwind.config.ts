@@ -5,15 +5,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "#0F172A",
-        card: "#1E293B",
-        border: "#334155",
-        "text-primary": "#F8FAFC",
+        background: "rgb(var(--color-background) / <alpha-value>)",
+        card: "rgb(var(--color-card) / <alpha-value>)",
+        border: "rgb(var(--color-border) / <alpha-value>)",
+        "text-primary": "rgb(var(--color-text-primary) / <alpha-value>)",
         emerald: {
-          DEFAULT: "#10B981",
-          dark: "#059669",
+          DEFAULT: "rgb(var(--color-emerald) / <alpha-value>)",
+          dark: "rgb(var(--color-emerald-dark) / <alpha-value>)",
         },
-        amber: "#F59E0B",
+        amber: "rgb(var(--color-amber) / <alpha-value>)",
       },
       borderRadius: {
         "2xl": "16px",

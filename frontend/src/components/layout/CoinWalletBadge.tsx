@@ -2,11 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { CoinIcon } from "@/components/shared/icons";
+import { useWalletSocket } from "@/hooks/useRewards";
 import { useAuthStore } from "@/store/useAuthStore";
 
 export function CoinWalletBadge() {
   const router = useRouter();
   const user = useAuthStore((state) => state.user);
+  useWalletSocket();
 
   if (!user) return null;
 

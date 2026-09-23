@@ -2,7 +2,31 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark is the default design (no attribute needed) and stays the primary
+   theme. [data-theme="light"] overrides surface/text/border tokens only —
+   the emerald/amber brand accents are unchanged across both themes. */
+:root,
+[data-theme="dark"] {
+  --color-background: 15 23 42; /* #0F172A */
+  --color-card: 30 41 59; /* #1E293B */
+  --color-border: 51 65 85; /* #334155 */
+  --color-text-primary: 248 250 252; /* #F8FAFC */
+  --color-emerald: 16 185 129; /* #10B981 */
+  --color-emerald-dark: 5 150 105; /* #059669 */
+  --color-amber: 245 158 11; /* #F59E0B */
+}
+
+[data-theme="light"] {
+  --color-background: 248 250 252; /* #F8FAFC */
+  --color-card: 255 255 255; /* #FFFFFF */
+  --color-border: 226 232 240; /* #E2E8F0 */
+  --color-text-primary: 15 23 42; /* #0F172A */
+  --color-emerald: 16 185 129;
+  --color-emerald-dark: 5 150 105;
+  --color-amber: 245 158 11;
+}
+
 body {
-  background-color: #0f172a;
-  color: #f8fafc;
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text-primary));
 }
