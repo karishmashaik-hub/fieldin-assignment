@@ -24,3 +24,9 @@ export function getIO(): SocketIOServer {
   }
   return io;
 }
+
+/** Broadcasts are best-effort: if sockets aren't initialized (e.g. in a unit
+ * test hitting the service layer directly) we no-op instead of throwing. */
+export function broadcast(event: string, payload: unknown): void {
+  io?.emit(event, payload);
+}
