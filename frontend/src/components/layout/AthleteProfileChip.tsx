@@ -1,12 +1,18 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CloseIcon, UserIcon } from "@/components/shared/icons";
+import { apiFetch, getRefreshToken } from "@/lib/apiClient";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useThemeStore } from "@/store/useThemeStore";
 
 export function AthleteProfileChip() {
+  const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
+  const theme = useThemeStore((state) => state.theme);
+  const setTheme = useThemeStore((state) => state.setTheme);
   const [open, setOpen] = useState(false);
 
   if (!user) return null;
@@ -64,10 +70,42 @@ export function AthleteProfileChip() {
               </div>
             )}
 
+            <div className="mt-4">
+              <p className="mb-1.5 text-xs text-text-primary/60">Theme</p>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setTheme("dark")}
+                  className={`flex-1 rounded-2xl border px-3 py-2 text-xs ${
+                    theme === "dark" ? "border-emerald text-emerald" : "border-border text-text-primary/70"
+                  }`}
+                >
+                  Dark
+                </button>
+                <button
+                  onClick={() => setTheme("light")}
+                  className={`flex-1 rounded-2xl border px-3 py-2 text-xs ${
+                    theme === "light" ? "border-emerald text-emerald" : "border-border text-text-primary/70"
+                  }`}
+                >
+                  Light
+                </button>
+              </div>
+            </div>
+
             <button
               onClick={() => {
+                const refreshToken = getRefreshToken();
+                if (refreshToken) {
+                  // Best-effort server-side revocation — logout must not
+                  // block on the network, so this never awaits or throws.
+                  apiFetch("/auth/logout", {
+                    method: "POST",
+                    body: JSON.stringify({ refreshToken }),
+                  }).catch(() => {});
+                }
                 logout();
                 setOpen(false);
+                router.replace("/login");
               }}
               className="mt-6 w-full rounded-2xl border border-border py-2 text-sm text-text-primary/80"
             >

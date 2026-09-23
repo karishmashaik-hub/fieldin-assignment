@@ -4,9 +4,10 @@ import jwt from "jsonwebtoken";
 import { pool } from "../config/db";
 import { env } from "../config/env";
 import { ApiError } from "../middleware/errorHandler";
-import { loginSchema, registerSchema } from "../utils/validators";
+import { issueRefreshToken, revokeRefreshToken, rotateRefreshToken } from "../services/authToken.service";
+import { loginSchema, logoutSchema, refreshSchema, registerSchema } from "../utils/validators";
 
-function signToken(user: { id: string; email: string }): string {
+function signAccessToken(user: { id: string; email: string }): string {
   return jwt.sign({ id: user.id, email: user.email }, env.jwtSecret, {
     expiresIn: env.jwtExpiresIn,
   } as jwt.SignOptions);
@@ -46,8 +47,9 @@ export async function register(req: Request, res: Response): Promise<void> {
   );
 
   const user = result.rows[0];
-  const token = signToken(user);
-  res.status(201).json({ token, user: toPublicUser(user) });
+  const accessToken = signAccessToken(user);
+  const refreshToken = await issueRefreshToken(user.id);
+  res.status(201).json({ accessToken, refreshToken, user: toPublicUser(user) });
 }
 
 export async function login(req: Request, res: Response): Promise<void> {
@@ -68,6 +70,33 @@ export async function login(req: Request, res: Response): Promise<void> {
     throw new ApiError(401, "Invalid email or password");
   }
 
-  const token = signToken(user);
-  res.json({ token, user: toPublicUser(user) });
+  const accessToken = signAccessToken(user);
+  const refreshToken = await issueRefreshToken(user.id);
+  res.json({ accessToken, refreshToken, user: toPublicUser(user) });
+}
+
+export async function refresh(req: Request, res: Response): Promise<void> {
+  const parsed = refreshSchema.safeParse(req.body);
+  if (!parsed.success) {
+    throw new ApiError(400, "Refresh token is required");
+  }
+
+  const { userId, token } = await rotateRefreshToken(parsed.data.refreshToken);
+
+  const result = await pool.query("SELECT id, email FROM users WHERE id = $1", [userId]);
+  const user = result.rows[0];
+  if (!user) {
+    throw new ApiError(401, "Invalid or expired refresh token");
+  }
+
+  const accessToken = signAccessToken(user);
+  res.json({ accessToken, refreshToken: token });
+}
+
+export async function logout(req: Request, res: Response): Promise<void> {
+  const parsed = logoutSchema.safeParse(req.body);
+  if (parsed.success) {
+    await revokeRefreshToken(parsed.data.refreshToken);
+  }
+  res.status(204).send();
 }
