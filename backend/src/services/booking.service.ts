@@ -51,8 +51,25 @@ export async function createBooking(input: CreateBookingInput) {
     // Booking failed after the lock was acquired (e.g. DB constraint) - release
     // immediately rather than waiting out the 10-minute TTL.
     await releaseSlotLock(input.venueId, input.slotDate, input.slotStart);
+    // The Redis lock only holds for 10 minutes, but a confirmed row is permanent -
+    // once the lock expires, a second attempt to book the same already-booked slot
+    // reaches this INSERT and trips the DB's unique constraint instead of the lock.
+    if (isUniqueSlotViolation(err)) {
+      throw new ApiError(409, "This slot is already booked. Please choose a different time.");
+    }
     throw err;
   }
+}
+
+function isUniqueSlotViolation(err: unknown): boolean {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "code" in err &&
+    (err as { code?: string }).code === "23505" &&
+    "constraint" in err &&
+    (err as { constraint?: string }).constraint === "uniq_confirmed_slot"
+  );
 }
 
 function mapBookingRow(row: any) {
