@@ -7,10 +7,9 @@ const STORAGE_KEY = "fieldin-theme";
 interface ThemeState {
   theme: Theme;
   setTheme: (theme: Theme) => void;
-  toggleTheme: () => void;
 }
 
-export const useThemeStore = create<ThemeState>((set, get) => ({
+export const useThemeStore = create<ThemeState>((set) => ({
   theme: "dark",
   setTheme: (theme) => {
     if (typeof document !== "undefined") {
@@ -20,8 +19,5 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
       window.localStorage.setItem(STORAGE_KEY, theme);
     }
     set({ theme });
-  },
-  toggleTheme: () => {
-    get().setTheme(get().theme === "dark" ? "light" : "dark");
   },
 }));

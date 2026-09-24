@@ -44,15 +44,6 @@ export function CloseIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export function CameraIcon({ className = "h-4 w-4" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
-      <path d="M4 8h3l2-2h6l2 2h3v11H4V8Z" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="12" cy="13" r="3.2" />
-    </svg>
-  );
-}
-
 export function SunIcon({ className = "h-4 w-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
@@ -97,8 +88,6 @@ export function CalendarIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export const MapPinIcon = LocationPinIcon;
-
 export function EyeIcon({ className = "h-4 w-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
@@ -126,17 +115,6 @@ export function TrophyIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-export function UsersIcon({ className = "h-4 w-4" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
-      <circle cx="9" cy="8" r="3" />
-      <path d="M2.5 19c1-3 3.3-4.8 6.5-4.8s5.5 1.8 6.5 4.8" strokeLinecap="round" />
-      <circle cx="17" cy="8.5" r="2.3" />
-      <path d="M15.7 14.5c2.4.2 4.2 1.9 5 4.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export function SendIcon({ className = "h-4 w-4" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
@@ -151,15 +129,6 @@ export function GiftIcon({ className = "h-4 w-4" }: IconProps) {
       <rect x="3" y="9" width="18" height="4" rx="1" />
       <path d="M5 13h14v8H5v-8ZM12 9v12" strokeLinecap="round" />
       <path d="M12 9c-1-3-3-4-4.5-3S6 9 12 9c6 0 5.5-4.5 4.5-6S13 6 12 9Z" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-export function TicketIcon({ className = "h-4 w-4" }: IconProps) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className={className}>
-      <path d="M3 8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a2 2 0 0 0 0-4V8Z" strokeLinejoin="round" />
-      <path d="M10 6v12" strokeDasharray="2 2" />
     </svg>
   );
 }
