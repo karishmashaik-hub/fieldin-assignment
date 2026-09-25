@@ -7,8 +7,23 @@ Venues & Booking, Tournaments, Matchmaking (with Socket.IO live updates), and Re
 
 ## Screenshots
 
-_TODO: add screenshots of all 4 modules (Venues + Booking Drawer, Tournaments, Matchmaking's 3 sub-tabs,
-Rewards) to `docs/screenshots/` and link them here before submitting._
+**Module 1 — Venues & Booking Drawer**
+![Venues listing with filters and the booking drawer open](docs/screenshots/01-venues-booking-drawer.png)
+
+**Module 2 — Tournaments**
+![Tournament cards with capacity progress bar and register/find-players actions](docs/screenshots/02-tournaments.png)
+
+**Module 3 — Matchmaking: Squad Requests**
+![Squad requests sub-tab with captain trust score and request-to-join](docs/screenshots/03-matchmaking-squad-requests.png)
+
+**Module 3 — Matchmaking: Solo Players**
+![Solo players hub with invite-to-squad and post-availability](docs/screenshots/04-matchmaking-solo-players.png)
+
+**Module 3 — Matchmaking: Open Pickup Matches**
+![Open pickup matches on the Leaflet map with list view toggle](docs/screenshots/05-matchmaking-pickup-matches.png)
+
+**Module 4 — Rewards**
+![Rewards store with coin wallet, RVM code redeemer, and voucher redemption](docs/screenshots/06-rewards.png)
 
 ## Tech Stack
 
